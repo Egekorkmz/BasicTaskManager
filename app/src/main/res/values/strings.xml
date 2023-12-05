@@ -3,6 +3,6 @@
     <string name="app_title">Task Manager</string>
     <string name="app_taskListLabel">Task List</string>
     <string name="app_btnAddTask">Add Task</string>
-    <string name="default_task">Work</string>
+    <string name="default_task">Enter New Task Name</string>
     <string name="default_subject">Android</string>
 </resources>

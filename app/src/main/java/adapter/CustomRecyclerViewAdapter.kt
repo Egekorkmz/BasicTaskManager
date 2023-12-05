@@ -63,19 +63,22 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
             itemView.imgStudyItem.setImageResource(currentItem.imgId)
             itemView.studyItemSubject.text = temp?.subject
 
-            /*itemView.itemPremiumConstraintLayout.setOnClickListener {
+            itemView.itemStudyLayout.setOnClickListener {
                 recyclerAdapterInterface.displayItem(currentItem)
-            }*/
+                Toast.makeText(context, currentItem.toString(), Toast.LENGTH_LONG).show()
+            }
+
         } else if (getItemViewType(position) == TYPE_NORMAL) {
             //STEP7
             val itemView = myRecyclerViewItemHolder as NormalCustomRecyclerViewItemHolder
             itemView.tvNormalItemName.text = currentItem.taskName
             itemView.imgNormal.setImageResource(currentItem.imgId)
 
-            /*
+
             itemView.itemNormalLinearLayout.setOnClickListener {
+                recyclerAdapterInterface.displayItem(currentItem)
                 Toast.makeText(context, currentItem.toString(), Toast.LENGTH_LONG).show()
-            }*/
+            }
         }
     }
 
