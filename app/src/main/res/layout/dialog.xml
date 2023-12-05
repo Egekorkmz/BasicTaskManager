@@ -20,8 +20,9 @@
         android:id="@+id/sp_photos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="20sp"
         android:layout_weight="1"
-        android:layout_margin="20sp"/>
+        android:entries="@array/images" />
 
     <Button
         android:id="@+id/btnUpdate"

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.WindowManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,12 +33,18 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
             Log.d("tag",temp.toString())
         }
 
-
         layoutManager = LinearLayoutManager(this)
         layoutManager!!.orientation = LinearLayoutManager.VERTICAL
         findViewById<RecyclerView>(R.id.rv_TaskList).setLayoutManager(layoutManager)
 
         reloadRecycler()
+
+
+        findViewById<Button>(R.id.btn_addTask).setOnClickListener {
+            TaskSystem.addTask()
+
+            reloadRecycler()
+        }
     }
 
     fun displayDialog(taskSelected: Task) {
@@ -47,9 +54,10 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
 
         //dialogbinding.imgDialogSocial.setImageResource(taskSelected.imgId)
 
+
         dialogbinding.btnUpdate.setOnClickListener{
             if(dialogbinding.edtTaskName.text.isNotEmpty()){
-                TaskSystem.updateData(taskSelected,NormalTask(dialogbinding.edtTaskName.text.toString(), R.drawable.baseline_work_outline_24,CustomRecyclerViewAdapter.TYPE_NORMAL))
+                TaskSystem.updateData(taskSelected,NormalTask(dialogbinding.edtTaskName.text.toString(), TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),CustomRecyclerViewAdapter.TYPE_NORMAL))
 
                 reloadRecycler()
                 dialog.dismiss()
