@@ -65,7 +65,6 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
 
             itemView.itemStudyLayout.setOnClickListener {
                 recyclerAdapterInterface.displayItem(currentItem)
-                Toast.makeText(context, currentItem.toString(), Toast.LENGTH_LONG).show()
             }
 
         } else if (getItemViewType(position) == TYPE_NORMAL) {
@@ -77,7 +76,6 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
 
             itemView.itemNormalLinearLayout.setOnClickListener {
                 recyclerAdapterInterface.displayItem(currentItem)
-                Toast.makeText(context, currentItem.toString(), Toast.LENGTH_LONG).show()
             }
         }
     }

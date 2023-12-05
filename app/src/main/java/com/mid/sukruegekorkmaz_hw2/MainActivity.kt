@@ -4,6 +4,7 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mid.sukruegekorkmaz_hw2.databinding.DialogBinding
 import db.NormalTask
+import db.StudyTask
 import db.Task
 import db.TaskSystem
 
@@ -52,13 +54,31 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
         val dialogbinding = DialogBinding.inflate(layoutInflater)
         dialog.setContentView(dialogbinding.root)
 
+        if(taskSelected.type == CustomRecyclerViewAdapter.TYPE_STUDY)
+            dialogbinding.edtNewSubject.visibility = View.VISIBLE
+
         //dialogbinding.imgDialogSocial.setImageResource(taskSelected.imgId)
 
-
         dialogbinding.btnUpdate.setOnClickListener{
-            if(dialogbinding.edtTaskName.text.isNotEmpty()){
-                TaskSystem.updateData(taskSelected,NormalTask(dialogbinding.edtTaskName.text.toString(), TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),CustomRecyclerViewAdapter.TYPE_NORMAL))
+            if(dialogbinding.edtNewTaskName.text.isNotEmpty()){
+                lateinit var newTask: Task
 
+                if(taskSelected.type == CustomRecyclerViewAdapter.TYPE_NORMAL) {
+                    newTask = NormalTask(
+                        dialogbinding.edtNewTaskName.text.toString(),
+                        TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition)
+                    )
+                }
+                else{
+                    newTask = StudyTask(
+                        dialogbinding.edtNewTaskName.text.toString(),
+                        TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),
+                        dialogbinding.edtNewSubject.text.toString()
+                    )
+                }
+
+
+                TaskSystem.updateData(taskSelected, newTask)
                 reloadRecycler()
                 dialog.dismiss()
             }

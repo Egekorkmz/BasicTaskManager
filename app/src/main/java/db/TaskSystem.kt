@@ -11,31 +11,24 @@ object TaskSystem {
     var create : Int = 0
 
     fun createData(){
-        var temp : Task
-
-        temp = NormalTask("Working", R.drawable.baseline_work_outline_24, CustomRecyclerViewAdapter.TYPE_NORMAL)
-        taskList.add(temp)
-        temp = StudyTask("Mobile Study", R.drawable.baseline_work_outline_24, "Gestures", CustomRecyclerViewAdapter.TYPE_STUDY)
-        taskList.add(temp)
-        temp = StudyTask("SQL Study", R.drawable.baseline_work_outline_24, "Queries", CustomRecyclerViewAdapter.TYPE_STUDY)
-        taskList.add(temp)
-        temp = NormalTask("Work Out", R.drawable.baseline_work_outline_24, CustomRecyclerViewAdapter.TYPE_NORMAL)
-        taskList.add(temp)
-
+        taskList.add(NormalTask("Working", R.drawable.baseline_work_outline_24))
+        taskList.add(StudyTask("Mobile Study", R.drawable.baseline_work_outline_24, "Gestures"))
+        taskList.add(StudyTask("SQL Study", R.drawable.baseline_work_outline_24, "Queries"))
+        taskList.add(NormalTask("Work Out", R.drawable.baseline_work_outline_24))
     }
 
     fun addTask(){
         var flag = true
         for(temp in taskList){
-            if(temp.taskName == "Lose your mind"){
+            if(temp.taskName == "Work"){
                 flag = false
             }
         }
 
         if(flag){
-            taskList.add(NormalTask("Lose your mind",R.drawable.baseline_work_outline_24,CustomRecyclerViewAdapter.TYPE_NORMAL))
+            taskList.add(NormalTask("Work",R.drawable.baseline_work_outline_24))
         }else{
-            taskList.add(NormalTask("Lose your mind$create",R.drawable.baseline_work_outline_24,CustomRecyclerViewAdapter.TYPE_NORMAL))
+            taskList.add(NormalTask("Work$create",R.drawable.baseline_work_outline_24))
             create++
         }
     }
@@ -75,5 +68,9 @@ object TaskSystem {
             3 -> return R.drawable.study
             else -> return R.drawable.baseline_work_outline_24
         }
+    }
+
+    fun deleteData(taskDel: Task){
+        taskList.remove(taskDel)
     }
 }
