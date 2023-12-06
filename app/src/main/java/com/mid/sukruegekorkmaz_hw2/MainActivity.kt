@@ -1,6 +1,7 @@
 package com.mid.sukruegekorkmaz_hw2
 
 import android.app.Dialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +10,11 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.mid.sukruegekorkmaz_hw2.databinding.ActivityMainBinding
 import com.mid.sukruegekorkmaz_hw2.databinding.DialogBinding
 import db.NormalTask
 import db.StudyTask
@@ -19,34 +23,34 @@ import db.TaskSystem
 
 class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdapterInterface {
     lateinit var layoutManager: LinearLayoutManager
-
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //binding
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         //remove status and action bar
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar?.hide()
 
-
         TaskSystem.createData()
 
-        for(temp in TaskSystem.taskList){
-            Log.d("tag",temp.toString())
-        }
-
         layoutManager = LinearLayoutManager(this)
-        layoutManager!!.orientation = LinearLayoutManager.VERTICAL
-        findViewById<RecyclerView>(R.id.rv_TaskList).setLayoutManager(layoutManager)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        binding.rvTaskList.layoutManager = layoutManager
 
         reloadRecycler()
 
-
-        findViewById<Button>(R.id.btn_addTask).setOnClickListener {
+        binding.btnAddTask.setOnClickListener {
             TaskSystem.addTask()
 
             reloadRecycler()
         }
+
     }
 
     fun displayDialog(taskSelected: Task) {
@@ -65,12 +69,14 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
 
                 if(taskSelected.type == CustomRecyclerViewAdapter.TYPE_NORMAL) {
                     newTask = NormalTask(
+                        taskSelected.id,
                         dialogbinding.edtNewTaskName.text.toString(),
                         TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition)
                     )
                 }
                 else{
                     newTask = StudyTask(
+                        taskSelected.id,
                         dialogbinding.edtNewTaskName.text.toString(),
                         TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),
                         dialogbinding.edtNewSubject.text.toString()
@@ -87,6 +93,15 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
             }
 
         }
+
+        dialogbinding.btnGoToTimer.setOnClickListener {
+            var intent: Intent? = null
+            intent = Intent(this@MainActivity, TimeTracker::class.java)
+            intent.putExtra("id", taskSelected.id)
+
+            startActivity(intent)
+        }
+
         dialogbinding.btnDialogClose.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }

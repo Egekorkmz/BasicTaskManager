@@ -17,21 +17,31 @@
 
         <TextView
             android:id="@+id/tv_recycleName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10sp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginTop="10sp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tv_recycleSubject"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10sp"
+            android:layout_marginLeft="10sp"
             android:layout_weight="1"
             android:text="TextView"
-            android:textSize="20sp" />
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tvStudyDuration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="TextView"
+            android:textSize="12sp"
+            android:layout_marginLeft="10sp"/>
     </LinearLayout>
 
     <ImageView

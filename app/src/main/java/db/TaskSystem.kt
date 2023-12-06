@@ -8,55 +8,55 @@ import kotlin.collections.Map
 
 object TaskSystem {
     var taskList : ArrayList<Task> = ArrayList<Task>()
-    var create : Int = 0
+    var idCounter : Int = 0
 
     fun createData(){
-        taskList.add(NormalTask("Working", R.drawable.baseline_work_outline_24))
-        taskList.add(StudyTask("Mobile Study", R.drawable.baseline_work_outline_24, "Gestures"))
-        taskList.add(StudyTask("SQL Study", R.drawable.baseline_work_outline_24, "Queries"))
-        taskList.add(NormalTask("Work Out", R.drawable.baseline_work_outline_24))
+        taskList.add(NormalTask(idCounter, "Working", R.drawable.baseline_work_outline_24))
+        idCounter++
+        taskList.add(StudyTask(idCounter, "Mobile Study", R.drawable.baseline_work_outline_24, "Gestures"))
+        idCounter++
+        taskList.add(StudyTask(idCounter, "SQL Study", R.drawable.baseline_work_outline_24, "Queries"))
+        idCounter++
+        taskList.add(NormalTask(idCounter, "Work Out", R.drawable.baseline_work_outline_24))
+        idCounter++
     }
 
     fun addTask(){
-        var flag = true
-        for(temp in taskList){
-            if(temp.taskName == "Work"){
-                flag = false
-            }
-        }
+        taskList.add(NormalTask(idCounter, "Work", R.drawable.baseline_work_outline_24))
+        idCounter++
+    }
 
-        if(flag){
-            taskList.add(NormalTask("Work",R.drawable.baseline_work_outline_24))
-        }else{
-            taskList.add(NormalTask("Work$create",R.drawable.baseline_work_outline_24))
-            create++
-        }
+    fun findTask(id:Int) : Int {
+        var index = 0
+
+        for(temp in taskList)
+            if(temp.id == id)
+                return index
+            else
+                index++
+
+        return -1
     }
 
     fun updateData(old: Task, new: Task) : Boolean{
-        var index = -1
-
         //search for given task
-        for(temp in taskList){
-            if(temp.taskName == old.taskName){
-                index++
-                break
+        val find = findTask(old.id)
+
+        if (find != -1) {
+            //update task with new task
+            if(find != -1){
+                val temp = taskList[find]
+
+                temp.taskName = new.taskName
+                temp.imgId = new.imgId
+
+                if(temp.type == CustomRecyclerViewAdapter.TYPE_STUDY)
+                    (temp as StudyTask).subject = (new as StudyTask).subject
+
+                return true
             }
-            index++
         }
 
-        //update task with new task
-        if(index != -1){
-            val temp = taskList[index]
-
-            temp.taskName = new.taskName
-            temp.imgId = new.imgId
-
-            if(temp.type == CustomRecyclerViewAdapter.TYPE_STUDY)
-                (temp as StudyTask).subject = (new as StudyTask).subject
-
-            return true
-        }
         return false
     }
 

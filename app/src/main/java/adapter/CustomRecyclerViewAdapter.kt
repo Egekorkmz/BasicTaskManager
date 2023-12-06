@@ -4,14 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.mid.sukruegekorkmaz_hw2.R
 import db.StudyTask
 import db.Task
 
@@ -62,6 +58,7 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
             itemView.studyItemName.text = currentItem.taskName
             itemView.imgStudyItem.setImageResource(currentItem.imgId)
             itemView.studyItemSubject.text = temp?.subject
+            itemView.itemDuration.text = "Duration: " + (currentItem.duration / 60) + ":" + (currentItem.duration % 60)
 
             itemView.itemStudyLayout.setOnClickListener {
                 recyclerAdapterInterface.displayItem(currentItem)
@@ -72,7 +69,7 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
             val itemView = myRecyclerViewItemHolder as NormalCustomRecyclerViewItemHolder
             itemView.tvNormalItemName.text = currentItem.taskName
             itemView.imgNormal.setImageResource(currentItem.imgId)
-
+            itemView.itemDuration.text = "Duration: " + (currentItem.duration / 60) + ":" + (currentItem.duration % 60)
 
             itemView.itemNormalLinearLayout.setOnClickListener {
                 recyclerAdapterInterface.displayItem(currentItem)
@@ -91,12 +88,14 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
         var studyItemSubject: TextView
         var imgStudyItem: ImageView
         var itemStudyLayout: LinearLayout
+        var itemDuration : TextView
 
         init {
             studyItemName = itemView.findViewById<TextView>(R.id.tv_recycleName)
             studyItemSubject = itemView.findViewById<TextView>(R.id.tv_recycleSubject)
             imgStudyItem = itemView.findViewById<ImageView>(R.id.iv_recycleImg)
             itemStudyLayout = itemView.findViewById<LinearLayout>(R.id.study_linearLayout)
+            itemDuration = itemView.findViewById<TextView>(R.id.tvStudyDuration)
         }
     }
 
@@ -106,11 +105,13 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
         var tvNormalItemName: TextView
         var imgNormal: ImageView
         var itemNormalLinearLayout: LinearLayout
+        var itemDuration : TextView
 
         init {
             tvNormalItemName = itemView.findViewById<TextView>(R.id.tv_recycleName)
             imgNormal = itemView.findViewById<ImageView>(R.id.iv_recycleImg)
             itemNormalLinearLayout = itemView.findViewById<LinearLayout>(R.id.normal_linearLayout)
+            itemDuration = itemView.findViewById<TextView>(R.id.tvNormalDuration)
         }
     }
 }
