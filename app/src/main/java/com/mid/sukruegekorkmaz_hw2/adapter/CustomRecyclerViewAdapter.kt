@@ -8,11 +8,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import db.StudyTask
-import db.Task
+import com.mid.sukruegekorkmaz_hw2.db.Task
 
 
-class CustomRecyclerViewAdapter( private val context: Context, private val recyclerItemValues: ArrayList<Task>) :
+class CustomRecyclerViewAdapter(private val context: Context, private val recyclerItemValues: MutableList<Task>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     interface RecyclerAdapterInterface{
@@ -53,11 +52,10 @@ class CustomRecyclerViewAdapter( private val context: Context, private val recyc
         val currentItem = recyclerItemValues[position]
         //STEP6
         if (getItemViewType(position) == TYPE_STUDY) {
-            var temp = currentItem as? StudyTask
             val itemView = myRecyclerViewItemHolder as StudyCustomRecyclerViewItemHolder
             itemView.studyItemName.text = currentItem.taskName
             itemView.imgStudyItem.setImageResource(currentItem.imgId)
-            itemView.studyItemSubject.text = temp?.subject
+            itemView.studyItemSubject.text = currentItem.subject
             itemView.itemDuration.text = "Duration: " + (currentItem.duration / 60) + ":" + (currentItem.duration % 60)
 
             itemView.itemStudyLayout.setOnClickListener {

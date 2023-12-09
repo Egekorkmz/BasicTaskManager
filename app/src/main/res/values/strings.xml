@@ -5,6 +5,8 @@
     <string name="app_btnAddTask">Add Task</string>
     <string name="app_btnTimer">Go To Timer</string>
     <string name="app_btnUpdate">Update</string>
+    <string name="app_saveAndExit">Save and Exit</string>
+    <string name="app_btnAddStudyTask">Add Study Task</string>
     <string name="default_taskName">Working</string>
     <string name="updateTaskNameHint">New Task Name</string>
     <string name="updateTaskSubjectHint">New Subject</string>

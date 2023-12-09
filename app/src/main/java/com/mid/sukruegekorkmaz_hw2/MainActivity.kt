@@ -4,40 +4,43 @@ import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.mid.sukruegekorkmaz_hw2.databinding.ActivityMainBinding
 import com.mid.sukruegekorkmaz_hw2.databinding.DialogBinding
-import db.NormalTask
-import db.StudyTask
-import db.Task
-import db.TaskSystem
+import com.mid.sukruegekorkmaz_hw2.db.Task
+import com.mid.sukruegekorkmaz_hw2.db.TaskRepository
+import com.mid.sukruegekorkmaz_hw2.db.TaskRoomDatabase
+import com.mid.sukruegekorkmaz_hw2.db.TaskSystem
+import com.mid.sukruegekorkmaz_hw2.db.TaskViewModel
 
 class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdapterInterface {
     lateinit var layoutManager: LinearLayoutManager
     private lateinit var binding: ActivityMainBinding
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        TaskSystem.taskView = ViewModelProvider(this).get(TaskViewModel::class.java)
 
         //binding
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
+
+
         //remove status and action bar
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar?.hide()
 
-        TaskSystem.createData()
+        TaskSystem.reloadData()
 
         layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
@@ -47,6 +50,11 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
 
         binding.btnAddTask.setOnClickListener {
             TaskSystem.addTask()
+
+            reloadRecycler()
+        }
+        binding.btnAddStudyTask.setOnClickListener {
+            TaskSystem.addStudyTask()
 
             reloadRecycler()
         }
@@ -68,19 +76,20 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
                 lateinit var newTask: Task
 
                 if(taskSelected.type == CustomRecyclerViewAdapter.TYPE_NORMAL) {
-                    newTask = NormalTask(
-                        taskSelected.id,
-                        dialogbinding.edtNewTaskName.text.toString(),
-                        TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition)
-                    )
-                }
-                else{
-                    newTask = StudyTask(
-                        taskSelected.id,
+                    newTask = Task(
                         dialogbinding.edtNewTaskName.text.toString(),
                         TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),
-                        dialogbinding.edtNewSubject.text.toString()
-                    )
+                        CustomRecyclerViewAdapter.TYPE_NORMAL,
+                        0,
+                        null)
+                }
+                else{
+                    newTask = Task(
+                        dialogbinding.edtNewTaskName.text.toString(),
+                        TaskSystem.getImageID(dialogbinding.spPhotos.selectedItemPosition),
+                        CustomRecyclerViewAdapter.TYPE_NORMAL,
+                        0,
+                        dialogbinding.edtNewSubject.text.toString())
                 }
 
 
@@ -102,7 +111,10 @@ class MainActivity : AppCompatActivity(), CustomRecyclerViewAdapter.RecyclerAdap
             startActivity(intent)
         }
 
-        dialogbinding.btnDialogClose.setOnClickListener { dialog.dismiss() }
+        dialogbinding.btnDialogClose.setOnClickListener {
+            reloadRecycler()
+            dialog.dismiss()
+        }
         dialog.show()
     }
 
